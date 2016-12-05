@@ -1,20 +1,30 @@
 {
   "name": "indb/spreader",
+  "description": "A scalable push library for Laravel with a better Response handling",
+  "keywords": ["apple", "iphone", "apns", "android", "gcm", "notification", "message", "push", "pusher", "laravel", "lumen"],
+  "homepage": "https://github.com/brunoti/spreader",
+  "type": "standalone",
+  "license": "MIT",
   "authors": [
     {
       "name": "BruNo Oliveira",
       "email": "bruno.oliveirati1@gmail.com"
+    },
+    {
+      "name": "Contributors",
+      "homepage": "https://github.com/Ph3nol/NotificationPusher/contributors"
     }
   ],
   "autoload": {
     "psr-4": {
-      "Indb\Spreader\\": "src/"
+      "Indb\\Spreader\\": "src/"
     }
   },
   "require": {
+    "php": ">=5.5.9",
     "zendframework/zendservice-apple-apns": "^1.2",
     "zendframework/zendservice-google-gcm": "^1.0",
-    "illuminate/support": "^5.*",
-    "illuminate/events": "^5.*"
+    "illuminate/support": "5.*",
+    "illuminate/events": "5.*"
   }
 }
