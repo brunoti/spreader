@@ -14,7 +14,7 @@
   "require": {
     "zendframework/zendservice-apple-apns": "^1.2",
     "zendframework/zendservice-google-gcm": "^1.0",
-    "illuminate/support": "^5.3",
-    "illuminate/events": "^5.3"
+    "illuminate/support": "^5.*",
+    "illuminate/events": "^5.*"
   }
 }
