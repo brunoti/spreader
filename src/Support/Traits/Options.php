@@ -6,7 +6,8 @@ trait Options
 {
     /**
      * @var array
-     */ protected $options = [];
+     */
+    protected $options = [];
 
     /**
      * Get options
@@ -21,7 +22,6 @@ trait Options
      * Has option.
      *
      * @param string $key Key
-     *
      * @return boolean
      */
     public function hasOption($key)

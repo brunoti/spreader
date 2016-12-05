@@ -7,16 +7,17 @@ use Indb\Spreader\Models\MessageContract;
 use Indb\Spreader\Exeptions\DriverException;
 use Indb\Spreader\Drivers\Apns\Jobs\QueuePush;
 use Indb\Spreader\Support\Driver as BaseDriver;
-use Indb\Spreader\Drivers\Apns\Events\PushWasSent;
-use Indb\Spreader\Drivers\Apns\Events\MessageWasSent;
 
-use ZendService\Apple\Apns\Client\AbstractClient      as ServiceAbstractClient;
-use ZendService\Apple\Apns\Client\Message             as ServiceClient;
-use ZendService\Apple\Apns\Message                    as ServiceMessage;
-use ZendService\Apple\Apns\Message\Alert              as ServiceAlert;
-use ZendService\Apple\Apns\Response\Message           as ServiceResponse;
+use Indb\Spreader\Drivers\Apns\Events\MessageWasSent;
+use Indb\Spreader\Drivers\Apns\Events\MessageWasNotSent;
+
+use ZendService\Apple\Apns\Client\AbstractClient as ServiceAbstractClient;
+use ZendService\Apple\Apns\Client\Message as ServiceClient;
+use ZendService\Apple\Apns\Message as ServiceMessage;
+use ZendService\Apple\Apns\Message\Alert as ServiceAlert;
+use ZendService\Apple\Apns\Response\Message as ServiceResponse;
 use ZendService\Apple\Apns\Exception\RuntimeException as ServiceRuntimeException;
-use ZendService\Apple\Apns\Client\Feedback            as ServiceFeedbackClient;
+use ZendService\Apple\Apns\Client\Feedback as ServiceFeedbackClient;
 
 class Driver extends BaseDriver
 {
@@ -52,11 +53,13 @@ class Driver extends BaseDriver
 
             foreach($push->getDevices()->chunk(10) as $device_chunk) {
                 $envelopes = [];
+
                 foreach($device_chunk as $device) {
                     $envelopes[] = $this->createEnvelope($device, $push->getMessage());
                 }
 
-                $this->dispatch(new QueuePush($this, $envelopes));
+                $job = (new QueuePush($this, $envelopes))->onQueue($this->getDriverName());
+                $this->dispatch($job);
             }
 
 
@@ -67,12 +70,12 @@ class Driver extends BaseDriver
         $client = $this->getConnectedPushClient();
 
         foreach($push->getDevices()->toArray() as $device) {
-            $envelop = $this->createEnvelope($device, $push->getMessage());
+            $envelope = $this->createEnvelope($device, $push->getMessage());
 
             try {
-                $response = $client->send($envelop);
+                $response = $client->send($envelope);
             } catch (RuntimeException $error) {
-                event(new MessageWasNotSent($error));
+                event(new MessageWasNotSent($envelope, $error));
                 continue;
             }
 
@@ -80,7 +83,7 @@ class Driver extends BaseDriver
                 $device->getToken() => $response
             ];
 
-            event(new MessageWasSent($response));
+            event(new MessageWasSent($response, $envelope));
         }
 
         return $response;

@@ -30,7 +30,6 @@ class SpreaderServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->register(EventServiceProvider::class);
     }
 
 

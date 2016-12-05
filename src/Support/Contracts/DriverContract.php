@@ -6,5 +6,12 @@ use Indb\Spreader\Models\PushContract;
 
 interface DriverContract extends ParameterContract
 {
-    public function send($push);
+    /**
+     * Sends the push
+     *
+     * @param PushContract $push
+     *
+     * @return void
+     */
+    public function send(PushContract $push);
 }

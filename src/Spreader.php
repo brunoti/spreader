@@ -38,8 +38,10 @@ class Spreader implements ParameterContract
     public function send()
     {
         foreach($this->pushes as $push) {
-            $driver = $push->getDriver()->setEnvironment($this->getParameter('env'));
-            $driver->send($push);
+            $push
+                ->getDriver()
+                ->setEnvironment($this->getParameter('env'))
+                ->send($push);
         }
     }
 

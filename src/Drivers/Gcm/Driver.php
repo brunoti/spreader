@@ -33,8 +33,6 @@ class Driver extends BaseDriver
 
     /**
      * {@inheritdoc}
-     *
-     * @throws \Indb\Spreader\Exception\PushException
      */
     public function send($push)
     {
@@ -44,14 +42,15 @@ class Driver extends BaseDriver
 
             foreach ($tokens as $tokensRange) {
                 $message = $this->getServiceMessageFromOrigin($tokensRange, $push->getMessage());
-                $this->dispatch(new QueuePush($this, $message));
+                $job = (new QueuePush($this, $message))->onQueue($this->getDriverName());
+                $this->dispatch($job);
             }
 
             return null;
         }
 
         $pushedDevices = [];
-        $client        = $this->getOpenedClient();
+        $client = $this->getOpenedClient();
 
         foreach ($tokens as $tokensRange) {
             $message = $this->getServiceMessageFromOrigin($tokensRange, $push->getMessage());
@@ -59,11 +58,11 @@ class Driver extends BaseDriver
 
             try {
                 $response = $client->send($message);
-            } catch (ServiceRuntimeException $e) {
-                event(new MessageWasNotSent($e));
+            } catch (ServiceRuntimeException $error) {
+                event(new MessageWasNotSent($message, $error));
             }
 
-            event(new MessageWasSent($response));
+            event(new MessageWasSent($response, $message));
 
             if ((bool) $response->getSuccessCount()) {
                 foreach ($tokensRange as $token) {

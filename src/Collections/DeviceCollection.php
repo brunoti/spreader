@@ -3,12 +3,14 @@
 namespace Indb\Spreader\Collections;
 
 use Indb\Spreader\Models\Device;
-use Indb\Spreader\Support\Collection;
+use Illuminate\Support\Collection;
 
 class DeviceCollection extends Collection
 {
     /**
-     * @param mixed $devices
+     * DeviceCollection constructor
+     *
+     * @param Array<Device> $devices
      */
     public function __construct(array $devices = [])
     {
@@ -17,16 +19,28 @@ class DeviceCollection extends Collection
         array_walk($devices, [$this, 'add']);
     }
 
+    /**
+     * Adds a device to the collection
+     *
+     * @param Device $device
+     *
+     * @return DeviceCollection
+     */
     public function add(Device $device)
     {
         $this->push($device);
         return $this;
     }
 
+    /**
+     * Return an array of unique tokens
+     *
+     * @return Collection
+     */
     public function getTokens()
     {
-        return array_map(function($device) {
+        return $this->map(function(Device $device) {
             return $device->getToken();
-        }, $this->items);
+        })->unique();
     }
 }
