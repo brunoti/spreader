@@ -3,30 +3,29 @@
 namespace Indb\Spreader;
 
 use Indb\Spreader\Models\PushContract;
+use Indb\Spreader\Support\Traits\Parameters;
+use Indb\Spreader\Support\Contracts\ParameterContract;
 
-class Spreader
+class Spreader implements ParameterContract
 {
+    use Parameters;
+
     const ENVIRONMENT_DEV  = 'dev';
     const ENVIRONMENT_PROD = 'prod';
 
     /**
-     * @var string
-     */
-    private $environment;
-
-    /**
      * @var array<Push>
      */
-    private $pushes;
+    private $pushes = [];
 
     /**
      * Constructor
      *
-     * @param string $environment Environment
+     * @param array $parameters - Parameters of the spreader
      */
-    public function __construct($environment = self::ENVIRONMENT_DEV)
+    public function __construct(array $parameters = [])
     {
-        $this->environment = $environment;
+        $this->start($parameters);
     }
 
     public function add(PushContract $push)
@@ -38,10 +37,37 @@ class Spreader
 
     public function send()
     {
-        foreach($pushes as $push) {
-            $adapter = $push->getAdapter()->setEnvironment($this->environment);
-            $adapter->send($push);
-            event(new PushWasSent($adapter));
+        foreach($this->pushes as $push) {
+            $driver = $push->getDriver()->setEnvironment($this->getParameter('env'));
+            $driver->send($push);
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefinedParameters()
+    {
+        return [ 'env', 'useQueue' ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultParameters()
+    {
+        return [
+            'env' => self::ENVIRONMENT_PROD,
+            'useQueue' => false,
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRequiredParameters()
+    {
+        return [];
+    }
+
 }

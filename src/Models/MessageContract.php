@@ -1,7 +1,7 @@
 <?php
 namespace Indb\Spreader\Models;
 
-interface MessageInterface
+interface MessageContract
 {
     public function getText();
     public function setText($text);

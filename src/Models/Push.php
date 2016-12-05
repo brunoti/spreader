@@ -3,15 +3,15 @@
 namespace Indb\Spreader\Models;
 
 use Indb\Spreader\Models\Message;
-use Indb\Spreader\Support\Adapter;
+use Indb\Spreader\Support\Driver;
 use Indb\Spreader\Collections\DeviceCollection;
 
 class Push implements PushContract
 {
     /**
-     * @var Adapter
+     * @var Driver
      */
-    private $adapter;
+    private $driver;
 
     /**
      * @var DeviceCollection
@@ -26,16 +26,16 @@ class Push implements PushContract
     /**
      * Push model constructor
      *
-     * @param Adapter $adapter
+     * @param Driver $driver
      * @param DeviceCollection $devices
      * @param Message $message
      */
     public function __construct(
-        Adapter $adapter,
+        Driver $driver,
         DeviceCollection $devices,
         Message $message
     ) {
-        $this->adapter = $adapter;
+        $this->driver = $driver;
         $this->devices = $devices;
         $this->message = $message;
     }
@@ -62,12 +62,12 @@ class Push implements PushContract
     }
 
     /**
-     * Getter for adapter
+     * Getter for driver
      *
-     * @return Adapter
+     * @return Driver
      */
-    public function getAdapter()
+    public function getDriver()
     {
-        return $this->adapter;
+        return $this->driver;
     }
 }

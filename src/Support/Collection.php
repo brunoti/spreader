@@ -1,15 +1,15 @@
 <?php
 
-namespace Indb\Spreader\Collection;
+namespace Indb\Spreader\Support;
 
 use ArrayIterator;
 
 abstract class Collection
 {
     /**
-     * @var ArrayIterator
+     * @var array
      */
-    protected $items;
+    protected $items = [];
 
     /**
      * Get
@@ -78,5 +78,27 @@ abstract class Collection
     {
         array_push($this->items, $item);
         return $this;
+    }
+
+    public function toArray()
+    {
+        return $this->items;
+    }
+
+    /**
+     * Chunk the underlying collection array.
+     *
+     * @param  int   $size
+     * @return static
+     */
+    public function chunk($size)
+    {
+        $chunks = [];
+
+        foreach (array_chunk($this->items, $size, true) as $chunk) {
+            $chunks[] = $chunk;
+        }
+
+        return $chunks;
     }
 }

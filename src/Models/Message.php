@@ -2,7 +2,7 @@
 
 namespace Indb\Spreader\Models;
 
-use Indb\Spreader\Support\Parameters;
+use Indb\Spreader\Support\Traits\Parameters;
 
 class Message implements MessageContract
 {

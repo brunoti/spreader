@@ -2,11 +2,9 @@
 
 namespace Indb\Spreader\Models;
 
-class PushContract
+interface PushContract
 {
     public function getDevices();
-
     public function getMessage();
-
-    public function getAdapter();
+    public function getDriver();
 }
