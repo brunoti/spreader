@@ -1,7 +1,7 @@
 <?php
 namespace Indb\Spreader\Drivers\Gcm;
 
-use Indb\Spreader\Models\PushInterface;
+use Indb\Spreader\Models\PushContract;
 use Indb\Spreader\Exceptions\PushException;
 use Indb\Spreader\Drivers\Gcm\Jobs\QueuePush;
 use Indb\Spreader\Collections\DeviceCollection;
@@ -34,7 +34,7 @@ class Driver extends BaseDriver
     /**
      * {@inheritdoc}
      */
-    public function send($push)
+    public function send(PushContract $push)
     {
         $tokens = array_chunk($push->getDevices()->getTokens(), 100);
 

@@ -2,6 +2,7 @@
 
 namespace Indb\Spreader\Drivers\Apns;
 
+use Indb\Spreader\Models\PushContract;
 use Indb\Spreader\Models\DeviceContract;
 use Indb\Spreader\Models\MessageContract;
 use Indb\Spreader\Exeptions\DriverException;
@@ -47,7 +48,7 @@ class Driver extends BaseDriver
         }
     }
 
-    public function send($push)
+    public function send(PushContract $push)
     {
         if($this->getParameter('useQueue')) {
 
