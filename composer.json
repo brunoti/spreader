@@ -1,0 +1,20 @@
+{
+  "name": "indb/spreader",
+  "authors": [
+    {
+      "name": "BruNo Oliveira",
+      "email": "bruno.oliveirati1@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Indb\Spreader\\": "src/"
+    }
+  },
+  "require": {
+    "zendframework/zendservice-apple-apns": "^1.2",
+    "zendframework/zendservice-google-gcm": "^1.0",
+    "illuminate/support": "^5.3",
+    "illuminate/events": "^5.3"
+  }
+}
