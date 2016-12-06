@@ -3,6 +3,7 @@
 namespace Indb\Spreader\Drivers\Gcm\Events;
 
 use ZendService\Google\Gcm\Message;
+use Indb\Spreader\Drivers\Gcm\Driver;
 use ZendService\Google\Exception\RuntimeException;
 
 class MessageWasNotSent
@@ -17,12 +18,19 @@ class MessageWasNotSent
      */
     protected $message;
 
+    /**
+     * @var Driver
+     */
+    protected $driver;
+
     public function __construct(
         Message $message,
-        RuntimeException $exception
+        RuntimeException $exception,
+        Driver $gcm
     ) {
         $this->exception = $exception;
         $this->message = $message;
+        $this->driver = $gcm;
     }
 
     /**
@@ -43,5 +51,15 @@ class MessageWasNotSent
     public function getMessage()
     {
         return $this->message;
+    }
+
+    /**
+     * Getter for driver
+     *
+     * @return Driver
+     */
+    public function getDriver()
+    {
+        return $this->driver;
     }
 }

@@ -59,10 +59,10 @@ class Driver extends BaseDriver
             try {
                 $response = $client->send($message);
             } catch (ServiceRuntimeException $error) {
-                event(new MessageWasNotSent($message, $error));
+                event(new MessageWasNotSent($message, $error, $this));
             }
 
-            event(new MessageWasSent($response, $message));
+            event(new MessageWasSent($response, $message, $this));
 
             if ((bool) $response->getSuccessCount()) {
                 foreach ($tokensRange as $token) {
