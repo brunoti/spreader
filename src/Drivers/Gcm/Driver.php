@@ -36,7 +36,7 @@ class Driver extends BaseDriver
      */
     public function send(PushContract $push)
     {
-        $tokens = array_chunk($push->getDevices()->getTokens(), 100);
+        $tokens = $push->getDevices()->getTokens()->chunk(100)->toArray();
 
         if($this->getParameter('useQueue')) {
 

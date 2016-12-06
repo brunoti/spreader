@@ -4,6 +4,8 @@ namespace Indb\Spreader;
 
 use Indb\Spreader\Models\PushContract;
 use Indb\Spreader\Support\Traits\Parameters;
+use Indb\Spreader\Exceptions\DriverException;
+use Indb\Spreader\Support\Contracts\DriverContract;
 use Indb\Spreader\Support\Contracts\ParameterContract;
 
 class Spreader implements ParameterContract
@@ -46,6 +48,29 @@ class Spreader implements ParameterContract
     }
 
     /**
+     * Get the driver feedback if is possible
+     *
+     * @param DriverContract $driver
+     *
+     * @return mixed
+     *
+     * @throws DriverException - When the driver has no dedicated `getFeedback` method
+     */
+    public function getFeedback(DriverContract $driver)
+    {
+        if (false === method_exists($driver, 'getFeedback')) {
+            throw new DriverException(
+                sprintf(
+                    '%s driver has no dedicated "getFeedback" method',
+                    (string) $driver
+                )
+            );
+        }
+
+       return $driver->setEnvironment($this->getParameter('env'))->getFeedback();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getDefinedParameters()
@@ -71,5 +96,4 @@ class Spreader implements ParameterContract
     {
         return [];
     }
-
 }

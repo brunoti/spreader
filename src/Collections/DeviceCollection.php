@@ -14,8 +14,8 @@ class DeviceCollection extends Collection
      */
     public function getTokens()
     {
-        return $this->map(function(Device $device) {
+        return collect($this->map(function(Device $device) {
             return $device->getToken();
-        })->unique();
+        })->unique()->toArray());
     }
 }
