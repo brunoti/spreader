@@ -1,9 +1,9 @@
 <?php
 
-namespace Indb\Spreader\Exception;
+namespace Indb\Spreader\Exceptions;
 
 use RuntimeException;
 
-class AdapterException extends RuntimeException
+class DriverException extends RuntimeException
 {
 }
