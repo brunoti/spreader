@@ -76,7 +76,7 @@ class Driver extends BaseDriver
             try {
                 $response = $client->send($envelope);
             } catch (RuntimeException $error) {
-                event(new MessageWasNotSent($envelope, $error));
+                event(new MessageWasNotSent($envelope, $error, $this));
                 continue;
             }
 
@@ -84,11 +84,12 @@ class Driver extends BaseDriver
                 $device->getToken() => $response
             ];
 
-            event(new MessageWasSent($response, $envelope));
+            event(new MessageWasSent($response, $envelope, $this));
         }
 
         return $response;
     }
+
 
     public function createEnvelope(DeviceContract $device, MessageContract $message)
     {

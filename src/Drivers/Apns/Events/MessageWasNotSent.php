@@ -3,17 +3,37 @@
 namespace Indb\Spreader\Drivers\Apns\Events;
 
 use ZendService\Apple\Apns\Message;
+use Indb\Spreader\Drivers\Apns\Driver;
 use ZendService\Apple\Apns\Exception\RuntimeException;
 
 
 class MessageWasNotSent
 {
+
+    /**
+     * @var Message
+     */
+    protected $message;
+
+    /**
+     * @var ResponseException
+     */
+    protected $exception;
+
+    /**
+     * @var Driver
+     */
+    protected $driver;
+
+
     public function __construct(
         Message $message,
-        ResponseException $exception
+        ResponseException $exception,
+        Driver $apns
     ) {
         $this->message = $message;
         $this->exception = $exception;
+        $this->driver = $apns;
     }
 
     /**
@@ -35,4 +55,25 @@ class MessageWasNotSent
     {
         return $this->message;
     }
+
+    /**
+     * Get the driver feedback
+     *
+     * @return array
+     */
+    public function getFeedback()
+    {
+        return $this->driver->getFeedback();
+    }
+
+    /**
+     * Getter for Driver
+     *
+     * @return Driver
+     */
+    public function getDriver()
+    {
+        return $this->driver;
+    }
+
 }

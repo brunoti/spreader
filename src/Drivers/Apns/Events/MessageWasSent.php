@@ -3,6 +3,7 @@
 namespace Indb\Spreader\Drivers\Apns\Events;
 
 use ZendService\Apple\Apns\Message;
+use Indb\Spreader\Drivers\Apns\Driver;
 use ZendService\Apple\Apns\Response\Message as Response;
 
 class MessageWasSent
@@ -16,6 +17,11 @@ class MessageWasSent
      * @var Message;
      */
     protected $message;
+
+    /**
+     * @var Driver
+     */
+    protected $driver;
 
     /**
      * @const array
@@ -32,10 +38,14 @@ class MessageWasSent
         Response::RESULT_UNKNOWN_ERROR        => 'Unknown Error',
     ];
 
-    public function __construct(Response $response, Message $message)
-    {
+    public function __construct(
+        Response $response,
+        Message $message,
+        Driver $apns
+    ) {
         $this->response = $response;
         $this->message = $message;
+        $this->driver = $apns;
     }
 
 
@@ -79,5 +89,25 @@ class MessageWasSent
     public function isOk()
     {
         return $this->response->getCode() === Response::RESULT_OK;
+    }
+
+    /**
+     * Get the driver feedback
+     *
+     * @return array
+     */
+    public function getFeedback()
+    {
+        return $this->driver->getFeedback();
+    }
+
+    /**
+     * Getter for Driver
+     *
+     * @return Driver
+     */
+    public function getDriver()
+    {
+        return $this->driver;
     }
 }
