@@ -8,6 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Indb\Spreader\Drivers\Apns\Events\MessageWasSent;
 use Indb\Spreader\Drivers\Apns\Events\MessageWasNotSent;
+use ZendService\Apple\Apns\Exception\RuntimeException;
 
 class QueuePush implements ShouldQueue
 {
@@ -46,11 +47,11 @@ class QueuePush implements ShouldQueue
             try {
                 $response = $client->send($envelope);
             } catch (RuntimeException $error) {
-                event(new MessageWasNotSent($error));
+                event(new MessageWasNotSent($envelope, $error, $this->driver));
                 continue;
             }
 
-            event(new MessageWasSent($response));
+            event(new MessageWasSent($response, $envelope, $this->driver));
         }
     }
 }

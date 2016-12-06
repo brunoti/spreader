@@ -75,7 +75,7 @@ class Driver extends BaseDriver
 
             try {
                 $response = $client->send($envelope);
-            } catch (RuntimeException $error) {
+            } catch (ServiceRuntimeException $error) {
                 event(new MessageWasNotSent($envelope, $error, $this));
                 continue;
             }

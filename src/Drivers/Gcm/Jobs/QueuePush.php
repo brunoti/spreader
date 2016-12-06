@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Indb\Spreader\Drivers\Gcm\Driver;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use ZendService\Google\Exception\RuntimeException;
 use Indb\Spreader\Drivers\Gcm\Events\MessageWasSent;
 use Indb\Spreader\Drivers\Gcm\Events\MessageWasNotSent;
 
@@ -41,6 +42,13 @@ class QueuePush implements ShouldQueue
     public function handle()
     {
         $client = $this->driver->getOpenedClient();
-        event(new MessageWasSent($client->send($this->message)));
+
+        try {
+            $response = $client->send($this->message);
+        } catch (RuntimeException $error) {
+            event(new MessageWasNotSent($this->message, $error, $this->driver));
+        }
+
+        event(new MessageWasSent($response, $message, $this->driver));
     }
 }
