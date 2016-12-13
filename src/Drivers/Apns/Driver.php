@@ -213,7 +213,7 @@ class Driver extends BaseDriver
      */
     public function getFeedback()
     {
-        $client           = $this->getConnectedPushClient();
+        $client           = $this->getConnectedFeedbackClient();
         $responses        = [];
         $serviceResponses = $client->feedback();
 
