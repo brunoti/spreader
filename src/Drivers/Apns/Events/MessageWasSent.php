@@ -74,7 +74,7 @@ class MessageWasSent
      *
      * @return string
      */
-    public function getReponseStatusText()
+    public function getResponseStatusText()
     {
         return isset(self::$statusMessages[$this->response->getCode()])
             ? self::$statusMessages[$this->response->getCode()]
