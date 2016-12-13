@@ -46,6 +46,8 @@ class Driver extends BaseDriver
         if (false === file_exists($cert)) {
             throw new DriverException(sprintf('Certificate %s does not exist', $cert));
         }
+
+        $this->setDriverName('apns');
     }
 
     public function send(PushContract $push)

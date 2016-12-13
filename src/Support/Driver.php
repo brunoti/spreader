@@ -30,9 +30,6 @@ abstract class Driver implements DriverContract
     public function __construct(array $parameters = [])
     {
         $this->start($parameters);
-
-        $reflectedClass   = new ReflectionClass($this);
-        $this->driverName = lcfirst($reflectedClass->getShortName());
     }
 
 

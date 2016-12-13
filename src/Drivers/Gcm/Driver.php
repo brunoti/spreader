@@ -31,6 +31,12 @@ class Driver extends BaseDriver
      */
     private $openedClient;
 
+    public function __construct(array $parameters = [])
+    {
+        parent::__construct($parameters);
+        $this->getDriverName('gcm');
+    }
+
     /**
      * {@inheritdoc}
      */
