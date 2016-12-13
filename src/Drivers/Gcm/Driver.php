@@ -34,7 +34,7 @@ class Driver extends BaseDriver
     public function __construct(array $parameters = [])
     {
         parent::__construct($parameters);
-        $this->getDriverName('gcm');
+        $this->setDriverName('gcm');
     }
 
     /**
