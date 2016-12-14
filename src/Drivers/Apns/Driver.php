@@ -2,6 +2,8 @@
 
 namespace Indb\Spreader\Drivers\Apns;
 
+use Carbon\Carbon;
+
 use Indb\Spreader\Models\PushContract;
 use Indb\Spreader\Models\DeviceContract;
 use Indb\Spreader\Models\MessageContract;
@@ -219,7 +221,11 @@ class Driver extends BaseDriver
         $responses        = [];
         $serviceResponses = $client->feedback();
 
-        return $serviceResponses;
+        foreach ($serviceResponses as $response) {
+            $responses[$response->getToken()] = new Carbon(date('c', $response->getTime()));
+        }
+
+        return $responses;
     }
 
 

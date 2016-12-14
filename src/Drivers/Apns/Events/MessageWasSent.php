@@ -27,6 +27,7 @@ class MessageWasSent
      * @const array
      */
     protected static $statusMessages = [
+        Response::RESULT_OK                   => 'The push was sent',
         Response::RESULT_PROCESSING_ERROR     => 'Processing error',
         Response::RESULT_MISSING_TOKEN        => 'Missing device token',
         Response::RESULT_MISSING_TOPIC        => 'Missing topic',

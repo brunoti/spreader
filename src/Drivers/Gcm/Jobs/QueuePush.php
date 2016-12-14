@@ -2,18 +2,13 @@
 
 namespace Indb\Spreader\Drivers\Gcm\Jobs;
 
-use Illuminate\Bus\Queueable;
+use Exception;
 use Indb\Spreader\Drivers\Gcm\Driver;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use ZendService\Google\Exception\RuntimeException;
 use Indb\Spreader\Drivers\Gcm\Events\MessageWasSent;
 use Indb\Spreader\Drivers\Gcm\Events\MessageWasNotSent;
 
-class QueuePush implements ShouldQueue
+class QueuePush
 {
-    use InteractsWithQueue, Queueable;
-
     /**
      * @var Driver
      */
@@ -45,7 +40,7 @@ class QueuePush implements ShouldQueue
 
         try {
             $response = $client->send($this->message);
-        } catch (RuntimeException $error) {
+        } catch (Exception $error) {
             event(new MessageWasNotSent($this->message, $error, $this->driver));
         }
 

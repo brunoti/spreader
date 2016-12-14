@@ -4,7 +4,6 @@ namespace Indb\Spreader\Drivers\Apns\Events;
 
 use ZendService\Apple\Apns\Message;
 use Indb\Spreader\Drivers\Apns\Driver;
-use ZendService\Apple\Apns\Exception\RuntimeException;
 
 
 class MessageWasNotSent

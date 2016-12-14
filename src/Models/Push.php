@@ -40,7 +40,6 @@ class Push implements PushContract
         $this->message = $message;
     }
 
-
     /**
      * Getter for message
      *
